@@ -1,116 +1,83 @@
-# 📦 Библеотека навигации от Khurshed Usmonov.
+# 🧰 Needed Utils
 
-Удобный утилитный класс для управления фрагментами в Android-приложениях с анимациями и стеком.
-
----
-
-## 🚀 Подключение
-
-### 1. Добавьте JitPack в `settings.gradle.kts`
-
-```kotlin
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-    }
-}
-```
-
-### 2. Добавьте зависимость в `build.gradle.kts`
-
-```kotlin
-dependencies {
-    implementation("com.github.uskhurshed:utils-utils:v1.0.1")
-}
-```
-
-> Также можно использовать `master-SNAPSHOT` или commit hash.
+Универсальный набор Kotlin-утилит для Android: работа с изображениями, JSON, SharedPreferences, Intent, WindowInsets и анимацией.
 
 ---
 
-## 🧩 Использование
+## 📁 Путь в проекте
 
-### ✅ Установить стартовый фрагмент:
-
-```kotlin
-setDefaultFragment(R.id.fragment_container, StartFragment())
 ```
-
-### ➡️ Навигация к другому фрагменту:
-
-```kotlin
-navigateTo(NextFragment())
-```
-
-### 📦 Получить стек:
-
-```kotlin
-val (count, fragments) = getBackStack()
-```
-
-### ⬅️ Вернуться назад:
-
-```kotlin
-navigateUp()
-```
-
-### 🔁 Перейти к фрагменту, если он уже в стеке:
-
-```kotlin
-navigateToIfHaveInStack(AnotherFragment())
-```
-
-### 🗑 Удалить фрагмент из back stack:
-
-```kotlin
-removeFragmentOrUp(AnotherFragment())
+utils/src/main/java/com/easyapps/utils
 ```
 
 ---
 
-## 🧱 API
+## 📦 Содержимое
+
+| Класс              | Назначение |
+|--------------------|------------|
+| `ImageUtils`       | Загрузка изображений через Glide, плейсхолдеры, screenshot, share |
+| `JsonUtils`        | Работа с JSONObject/JSONArray: безопасное получение, конвертация |
+| `PreferencesUtils` | Упрощённая работа с SharedPreferences |
+| `DataTransferUtils`| Получение Parcelable и Serializable из Intent и Bundle |
+| `WindowUtils`      | Работа с системными insets, анимацией кликов, светлыми панелями |
+
+---
+
+## 🔍 Примеры использования
+
+### 🖼 ImageUtils
 
 ```kotlin
-object NavigationUtils {
-    fun AppCompatActivity.setDefaultFragment(id: Int, fragment: Fragment)
-    fun Fragment.navigateTo(fragment: Fragment, addToBackStack: Boolean = true, bundle: Bundle? = null)
-    fun Fragment.navigateToIfHaveInStack(fragment: Fragment, addToBackStack: Boolean = true, bundle: Bundle? = null)
-    fun Fragment.navigateUp()
-    fun Fragment.getBackStack(): Pair<Int, List<String>>
-    fun Fragment.removeFragmentOrUp(fragment: Fragment)
-}
+imageView.glideCenterCrop("https://link.com/image.jpg")
+imageView.glideCenterInside(url)
+bitmap.share(context, "Поделиться изображением")
+view.screenShot()
 ```
 
 ---
 
-## 🎞 Анимации
+### 📦 JsonUtils
 
-Анимации, которые должны быть добавлены в `res/anim/`:
+```kotlin
+val json = JSONObject(response)
+val name = json.string("name", "No Name")
+val arr = json.jsonArray("items")
+val secondName = arr.stringOrNull(1)
+```
 
-| Имя               | Направление       |
-|-------------------|-------------------|
-| `slide_in_right`  | справа → внутрь   |
-| `slide_out_left`  | внутрь → влево    |
-| `slide_in_left`   | слева → внутрь    |
-| `slide_out_right` | внутрь → вправо   |
+---
 
-Пример `slide_in_right.xml`:
+### 💾 PreferencesUtils
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android">
-    <translate
-        android:duration="@android:integer/config_shortAnimTime"
-        android:fromXDelta="100%p"
-        android:toXDelta="0"
-        android:interpolator="@android:anim/accelerate_interpolator" />
-</set>
+```kotlin
+PreferencesUtils.init(context)
+PreferencesUtils.setPrefString("key", "value")
+val name = PreferencesUtils.getPrefString("key", "default")
+```
+
+---
+
+### 📤 DataTransferUtils
+
+```kotlin
+val data: MyData? = intent.parcelable("dataKey")
+val id: String? = bundle.serializable("id")
+```
+
+---
+
+### 🪟 WindowUtils
+
+```kotlin
+view.setupInsets()
+activity.setLightSystemBars(true)
+view.setInteractiveClick { toast("Clicked") }
+val px = 16.dpToPx(context)
 ```
 
 ---
 
 ## 📜 License
 
-MIT License — используй свободно 😎
+MIT License — используй свободно в своих проектах.
