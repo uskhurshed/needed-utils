@@ -114,7 +114,7 @@ object WindowUtils {
         }
     }
 
-    /* USING
+    /* USING IN SINGLE ACTIVITY
     override fun attachBaseContext(newBase: Context) {
         val contextWithoutFontScale = newBase.disableFontScaling()
         super.attachBaseContext(contextWithoutFontScale)
