@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -112,6 +113,18 @@ object WindowUtils {
             }
         }
     }
+
+    /* USING
+    override fun attachBaseContext(newBase: Context) {
+        val contextWithoutFontScale = newBase.disableFontScaling()
+        super.attachBaseContext(contextWithoutFontScale)
+    }*/
+    fun Context.disableFontScaling(fontScale: Float = 1.0f): Context {
+        val config = Configuration(resources.configuration)
+        config.fontScale = fontScale
+        return createConfigurationContext(config)
+    }
+
 
 
 
