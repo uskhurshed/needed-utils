@@ -1,14 +1,32 @@
-# 🧰 Needed Utils
+# 📦 Библеотека Needed Utils от Khurshed Usmonov.
 
 Универсальный набор Kotlin-утилит для Android: работа с изображениями, JSON, SharedPreferences, Intent, WindowInsets и анимацией.
 
 ---
 
-## 📁 Путь в проекте
+## 🚀 Подключение
 
+### 1. Добавьте JitPack в `settings.gradle.kts`
+
+```kotlin
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
 ```
-utils/src/main/java/com/easyapps/utils
+
+### 2. Добавьте зависимость в `build.gradle.kts`
+
+```kotlin
+dependencies {
+    implementation("com.github.uskhurshed:needed-utils:v1.0.0")
+}
 ```
+
+> Также можно использовать `master-SNAPSHOT` или commit hash.
 
 ---
 
