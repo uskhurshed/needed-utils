@@ -78,6 +78,13 @@ object WindowUtils {
         return result
     }
 
+    @SuppressLint("InternalInsetResource", "DiscouragedApi")
+    fun getNavigationBarHeight(context: Context): Int {
+        val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
+    }
+
+
     fun Activity.hideSystemBars() = WindowCompat.getInsetsController(window, window.decorView).apply {
         systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         hide(WindowInsetsCompat.Type.systemBars())

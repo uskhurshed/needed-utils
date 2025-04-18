@@ -128,7 +128,7 @@ object JsonUtils {
     }
 
     fun String?.toJSONObjectOrNull(): JSONObject? {
-        if (this == null) return null
+        if (isNullOrEmpty()) return null
         return try {
             JSONObject(this)
         } catch (e: Exception) {
@@ -137,7 +137,7 @@ object JsonUtils {
     }
 
     fun String?.toJSONArrayOrNull(): JSONArray? {
-        if (this == null) return null
+        if (isNullOrEmpty()) return null
         return try {
             JSONArray(this)
         } catch (e: Exception) {

@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import java.io.File
@@ -20,126 +21,261 @@ import java.io.FileOutputStream
 
 object ImageUtils {
 
-    fun ImageView.glideCenterCrop(url:String?,error:Int = R.drawable.ic_broken_image){
-        if (url.isNullOrEmpty()) return
 
-        val animPlaceholder = ContextCompat.getDrawable(context, R.drawable.loading_animation_shimmer) as AnimationDrawable?
-        animPlaceholder?.start()
-        scaleType = ImageView.ScaleType.CENTER_INSIDE
+    fun ImageView.glideCenterCrop(url: String?, error: Int? = null, placeholder: Int? = null) {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable?
+            animPlaceholder?.start()
 
-        Glide.with(context)
-            .load(url)
-            .placeholder(animPlaceholder)
-            .error(error)
-            .centerCrop()
-            .into(this)
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            if (animPlaceholder != null) setImageDrawable(animPlaceholder) else setImageDrawable(withoutAnimation)
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
+
+            glideDrawable(url,originalScaleType) {
+                if (it == null) {
+                    setImageResource(error ?: R.drawable.ic_broken_image)
+                } else {
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    setImageDrawable(it)
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
-    fun ImageView.glideFitCenter(url:String?,error:Int = R.drawable.ic_broken_image){
-        if (url.isNullOrEmpty()) return
+    fun ImageView.glideFitCenter(url: String?, error: Int? = null, placeholder: Int? = null)  {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable
+            animPlaceholder?.start()
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
 
-        val animPlaceholder = ContextCompat.getDrawable(context, R.drawable.loading_animation_shimmer) as AnimationDrawable?
-        animPlaceholder?.start()
-        scaleType = ImageView.ScaleType.CENTER_INSIDE
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
 
-        Glide.with(context)
-            .load(url)
-            .placeholder(animPlaceholder)
-            .error(error)
-            .fitCenter()
-            .into(this)
+            glideDrawable( url,originalScaleType) {
+                if (it == null) {
+                    setImageResource(error ?: R.drawable.ic_broken_image)
+                } else {
+                    scaleType = ImageView.ScaleType.FIT_CENTER
+                    setImageDrawable(it)
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
 
-    fun ImageView.glideCenterCropPlaceholder(url:String?,placeholder:Int ,error: Int= R.drawable.ic_broken_image){
-        if (url.isNullOrEmpty()) return
-        scaleType = ImageView.ScaleType.CENTER_CROP
 
-        Glide.with(context)
-            .load(url)
-            .placeholder(placeholder)
-            .error(error)
-            .centerCrop()
-            .into(this)
+    fun ImageView.glideFitEnd(url: String?, error: Int? = null, placeholder: Int? = null) {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable?
+            animPlaceholder?.start()
+
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            if (animPlaceholder != null) setImageDrawable(animPlaceholder) else setImageDrawable(withoutAnimation)
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
+
+            glideDrawable(url,originalScaleType) {
+                if (it == null) {
+                    setImageResource(error ?: R.drawable.ic_broken_image)
+                } else {
+                    scaleType = ImageView.ScaleType.FIT_END
+                    setImageDrawable(it)
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
-    fun ImageView.glideCenterInside(url:String?){
-        if (url.isNullOrEmpty()) return
 
-        val animPlaceholder = ContextCompat.getDrawable(context, R.drawable.loading_animation_shimmer) as AnimationDrawable?
-        animPlaceholder?.start()
 
-        Glide.with(context)
-            .load(url)
-            .placeholder(animPlaceholder)
-            .error(R.drawable.ic_broken_image)
-            .centerInside()
-            .into(this)
+    fun ImageView.glideCenterInside(url: String?, error: Int? = null, placeholder: Int? = null)  {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable
+            animPlaceholder?.start()
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
+
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
+
+            glideDrawable( url,originalScaleType) {
+                if (it == null) {
+                    setImageResource(error ?: R.drawable.ic_broken_image)
+                } else {
+                    scaleType = ImageView.ScaleType.CENTER_INSIDE
+                    setImageDrawable(it)
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
-    fun ImageView.glideFitCenter(url:String?){
-        if (url.isNullOrEmpty()) return
 
-        val animPlaceholder = ContextCompat.getDrawable(context, R.drawable.loading_animation_shimmer) as AnimationDrawable?
-        animPlaceholder?.start()
 
-        Glide.with(context)
-            .load(url)
-            .placeholder(animPlaceholder)
-            .error(R.drawable.ic_broken_image)
-            .fitCenter()
-            .into(this)
+    fun ImageView.glide(url: String?, error: Int? = null, placeholder: Int? = null) {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable
+            animPlaceholder?.start()
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
+
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
+
+            glideDrawable( url,originalScaleType) {
+                if (it == null) setImageResource(error ?: R.drawable.ic_broken_image)
+                else setImageDrawable(it)
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
-    fun glideBitmap(context: Context, url: String?, onBitmapLoaded: (Bitmap?) -> Unit) {
+
+    fun ImageView.glideFitXY(url: String?, error: Int? = null, placeholder: Int? = null)  {
+        try {
+            val animPlaceholder = ContextCompat.getDrawable(context, placeholder ?: R.drawable.loading_animation_shimmer) as? AnimationDrawable
+            animPlaceholder?.start()
+            val withoutAnimation = ContextCompat.getDrawable(context,placeholder ?: R.drawable.placeholder)
+
+            val originalScaleType =  scaleType
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            setImageDrawable(animPlaceholder ?: withoutAnimation)
+
+            glideDrawable( url,originalScaleType) {
+                if (it == null) {
+                    setImageResource(error ?: R.drawable.ic_broken_image)
+                } else {
+                    scaleType = ImageView.ScaleType.FIT_XY
+                    setImageDrawable(it)
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+
+    private fun ImageView.glideDrawable(url: String?,originalScale:ImageView.ScaleType,onFinish: (Drawable?) -> Unit) {
+        try {
+            Glide.with(context)
+                .load(url)
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        scaleType = originalScale
+                        setImageDrawable(null)
+                        onFinish.invoke(resource)
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        scaleType = originalScale
+                        setImageDrawable(null)
+                        onFinish.invoke(null)
+                    }
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        scaleType = originalScale
+                        setImageDrawable(null)
+                        onFinish.invoke(null)
+                    }
+                })
+        }catch (e:Exception){
+            onFinish.invoke(null)
+            setImageDrawable(null)
+            e.printStackTrace()
+        }
+    }
+
+    fun glideDrawable(context: Context, url: String?, onFinish: (Drawable?) -> Unit) {
         if (url.isNullOrEmpty()) {
-            onBitmapLoaded(null)
+            onFinish(null)
             return
         }
 
-        Glide.with(context)
-            .asBitmap()
-            .load(url)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    onBitmapLoaded(resource)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    onBitmapLoaded(null)
-                }
-
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    onBitmapLoaded(null)
-                }
-            })
+        try {
+            Glide.with(context)
+                .asDrawable()
+                .load(url)
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) = onFinish(resource)
+                    override fun onLoadCleared(placeholder: Drawable?) =  onFinish(null)
+                    override fun onLoadFailed(errorDrawable: Drawable?) = onFinish(null)
+                })
+        }catch (e:Exception){
+            onFinish(null)
+        }
     }
 
-    fun loadBitmapCircleCrop(context: Context, url: String?, onBitmapLoaded: (Bitmap?) -> Unit) {
+    fun glideBitmap(context: Context, url: String?, onFinish: (Bitmap?) -> Unit) {
         if (url.isNullOrEmpty()) {
-            onBitmapLoaded(null)
+            onFinish(null)
             return
         }
-        val error = ContextCompat.getDrawable(context, R.drawable.ic_broken_image)?.toBitmap()
 
-        Glide.with(context)
-            .asBitmap()
-            .load(url)
-            .error(error)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    onBitmapLoaded(resource)
-                }
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    onBitmapLoaded(error)
-                }
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    onBitmapLoaded(error)
-                }
-            })
+        try {
+            Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) = onFinish(resource)
+                    override fun onLoadCleared(placeholder: Drawable?) =  onFinish(null)
+                    override fun onLoadFailed(errorDrawable: Drawable?) = onFinish(null)
+                })
+        }catch (e:Exception){
+            onFinish(null)
+        }
+
     }
+
+    fun glideFile(context: Context, url: String?, onFinish: (File?) -> Unit) {
+        if (url.isNullOrEmpty()) {
+            onFinish(null)
+            return
+        }
+
+        try {
+            Glide.with(context)
+                .asFile()
+                .load(url)
+                .into(object : CustomTarget<File>() {
+                    override fun onResourceReady(resource: File, transition: Transition<in File>?) = onFinish(resource)
+                    override fun onLoadCleared(placeholder: Drawable?) =  onFinish(null)
+                    override fun onLoadFailed(errorDrawable: Drawable?) = onFinish(null)
+                })
+        }catch (e:Exception){
+            onFinish(null)
+        }
+    }
+
+
+    fun glideGif(context: Context, url: String?, onFinish: (GifDrawable?) -> Unit) {
+        if (url.isNullOrEmpty()) {
+            onFinish(null)
+            return
+        }
+        try {
+            Glide.with(context)
+                .asGif()
+                .load(url)
+                .into(object : CustomTarget<GifDrawable>() {
+                    override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) = onFinish(resource)
+                    override fun onLoadCleared(placeholder: Drawable?) =  onFinish(null)
+                    override fun onLoadFailed(errorDrawable: Drawable?) = onFinish(null)
+                })
+        }catch (e:Exception){
+            onFinish(null)
+        }
+    }
+
+
 
     fun View.screenShot(): Bitmap {
         val bitmap = createBitmap(width, height)
@@ -160,9 +296,6 @@ object ImageUtils {
         }
         context.startActivity(Intent.createChooser(intent, text))
     }
-
-
-
-
+    
 
 }
