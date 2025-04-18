@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.uskhurshed:needed-utils:v1.0.0")
+    implementation("com.github.uskhurshed:needed-utils:2.0.1")
 }
 ```
 
